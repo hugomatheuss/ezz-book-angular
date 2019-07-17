@@ -1,21 +1,12 @@
-<mat-tab-group>
-  <mat-tab label="New User"> 
-    <app-user-form></app-user-form> 
-  </mat-tab>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Http Client App</span>
+  </mat-toolbar-row>
+</mat-toolbar>
 
-  <mat-tab label="New Author"> 
-    <app-author-form></app-author-form> 
-  </mat-tab>
-
-  <mat-tab label="New Book"> 
-    <app-book-form></app-book-form> 
-  </mat-tab>
-
-  <mat-tab label="Authors">
-    <app-authors-table></app-authors-table>
-  </mat-tab>
-  
-  <mat-tab label="Books">
-    <app-books-table></app-books-table>
-  </mat-tab>
-</mat-tab-group>
+<mat-card>
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <app-author fxFlex="40"></app-author>
+    <app-book fxFlex="55"></app-book>
+  </div>
+</mat-card>

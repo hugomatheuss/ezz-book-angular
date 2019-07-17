@@ -7,14 +7,12 @@ import { AppComponent } from './app.component';
 //import { AngularFireModule } from '@angular/fire';
 //import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { UserFormComponent } from './user-form/user-form.component';
-import { AuthorFormComponent } from './author-form/author-form.component';
-import { BookFormComponent } from './book-form/book-form.component';
-import { AuthorsTableComponent } from './authors-table/authors-table.component';
-import { BooksTableComponent } from './books-table/books-table.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthorComponent } from './author/author.component';
+import { BookComponent } from './book/book.component';
 
 const config = {
   
@@ -23,8 +21,7 @@ const config = {
 @NgModule({
   declarations: [
     AppComponent,    
-    UserFormComponent, AuthorFormComponent, BookFormComponent, 
-    AuthorsTableComponent, BooksTableComponent
+    AuthorComponent, BookComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +30,9 @@ const config = {
     //AngularFireModule.initializeApp(environment.firebase),
     //AngularFireDatabaseModule,
     FormsModule,
+    ReactiveFormsModule,
     MaterialModule,
+    HttpClientModule,
     FlexLayoutModule
   ],
   providers: [],
