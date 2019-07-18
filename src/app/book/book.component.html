@@ -1,1 +1,49 @@
-<p>book works!</p>
+<mat-card fxFlex>
+    <mat-card-title>
+        Novo Livro
+    </mat-card-title>
+
+    <mat-card-content>
+        <form [formGroup]="bookForm" (ngSubmit)="save()" fxLayout="column" fxLayoutAlign="space-between">
+            <input type="hidden" formControlName="_id">
+
+            <mat-form-field>
+                <input matInput placeholder="Livro" formControlName="title">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Autor</mat-label>
+                    <mat-select placeholder="Autores" formControlName="author">                        
+                        <mat-option *ngFor="let a of authors" [value]="a._id">
+                            {{a.name}}
+                        </mat-option>
+                    </mat-select>
+            </mat-form-field>
+
+            <div fxLayout="row" fxLayoutAlign="end end">
+                <button mat-button color="primary" type="submit">Salvar</button>
+                <button mat-button color="warn" type="reset">Cancelar</button>
+            </div>
+        </form>
+
+        <ng-container *ngIf="books?.length>0; else empty">
+            <mat-list>
+                <h3 mat-subheader>Livros</h3>
+                <mat-list-item *ngFor="let b of books">
+                    <mat-icon mat-list-icon>folder</mat-icon>
+                    <h4 mat-line>{{ b.title }}</h4>
+                    <mat-chip-list mat-line>
+                        <mat-chip>{{ b.author }}</mat-chip>
+                    </mat-chip-list>
+                    <button mat-icon-button color="accent" (click)="delete(b)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="edit(b)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+
+    </mat-card-content>    
+</mat-card>

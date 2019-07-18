@@ -4,6 +4,7 @@ import { AuthorService } from '../author.service';
 import { MatSnackBar } from '@angular/material';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-author',
@@ -17,36 +18,40 @@ export class AuthorComponent implements OnInit {
   authorEdit = null;
   private unsubscribe: Subject<any> = new Subject();
 
-  constructor(private authorService: AuthorService,
+  authorForm: FormGroup = this.fb.group({
+    _id: [null],
+    name: ['', Validators.required],
+  })
+
+  constructor(private authorService: AuthorService, 
+    private fb: FormBuilder, 
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.authorService.get()
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe((authors) => this.authors = authors);
+      .subscribe((myAuthors) => this.authors = myAuthors);    
   }
 
   save() {
+    let data = this.authorForm.value;
     if (this.authorEdit) {
       this.authorService.update({
         name: this.authorName, 
-        _id: this.authorEdit._id,
-        books: this.authorEdit.books
+        _id: this.authorEdit._id        
       }).subscribe(
         (author) => {
           this.notify('Updated!');
+          console.log(author);
         },
         (err) => {
-          this.notify('Error'!);
+          this.notify('Error');
           console.error(err);
         } 
       )
     }
     else {
-      this.authorService.add({ 
-        name: this.authorName,
-        books: this.books
-      })
+      this.authorService.add(data)
         .subscribe(
           (author) => {
             console.log(author);

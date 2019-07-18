@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Author } from './author';
-import { Book } from './book';
-import { BookService } from './book.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,39 +15,23 @@ export class AuthorService {
   private authorsSubject$: BehaviorSubject<Author[]> = new BehaviorSubject<Author[]>(null);
   private loaded: boolean = false;
 
-  constructor(private http: HttpClient,
-    private bookService: BookService) { }
+  constructor(private http: HttpClient) { }
 
   get(): Observable<Author[]> {
     if (!this.loaded) {
-      combineLatest(
-        this.http.get<Author[]>(this.url),
-        this.bookService.get())
-        .pipe(
-          tap(([authors, books]) => console.log(authors, books)),
-          map(([authors, books]) => {
-            for (let a of authors) {
-              let ids = (a.books as string[]);
-              a.books = ids.map((id) => books.find(book => book._id == id));
-            }
-            return authors;
-          }),
-          tap((authors) => console.log(authors))
-        )
-        .subscribe(this.authorsSubject$);
-
+      this.http.get<Author[]>(this.url)
+          .subscribe(this.authorsSubject$);
       this.loaded = true;
     }
     return this.authorsSubject$.asObservable();
   }
 
-  add(author: Author): Observable<Author> {
-    let books = (author.books as Book[]).map(book=>book._id)
-    return this.http.post<Author>(this.url, {...author, books})
+  add(author: Author): Observable<Author> {    
+    return this.http.post<Author>(this.url, author)
       .pipe(
-        tap((a) => {
+        tap((a: Author) => {
           this.authorsSubject$.getValue()
-            .push({ ...author, _id: a._id })
+            .push(a);
         })
       );
   }
@@ -66,9 +48,8 @@ export class AuthorService {
       )
   }
 
-  update(author: Author): Observable<Author> {
-    let books = (author.books as Book[]).map(book => book._id);
-    return this.http.patch<Author>(`${this.url}/${author._id}`, { ...author, books })
+  update(author: Author): Observable<Author> {    
+    return this.http.patch<Author>(`${this.url}/${author._id}`, author)
       .pipe(
         tap((author) => {
           let authors = this.authorsSubject$.getValue();

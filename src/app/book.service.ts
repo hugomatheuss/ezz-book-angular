@@ -25,4 +25,39 @@ export class BookService {
     }
     return this.booksSubject$.asObservable();
   }
+
+  add(book: Book): Observable<Book> {    
+    return this.http.post<Book>(this.url, book)
+      .pipe(
+        tap((b: Book) => {
+          this.booksSubject$.getValue()
+            .push(b);
+        })
+      );
+  }
+
+  update(book: Book): Observable<Book> {    
+    return this.http.patch<Book>(`${this.url}/${book._id}`, book)
+      .pipe(
+        tap((b) => {
+          let books = this.booksSubject$.getValue();
+          let i = books.findIndex(b => b._id === book._id);
+          if (i >= 0) {
+            books[i] = b;
+          }            
+        })
+      )
+  }
+
+  del(book: Book): Observable<any> {
+    return this.http.delete(`${this.url}/${book._id}`)
+      .pipe(
+        tap(() => {
+          let books = this.booksSubject$.getValue();
+          let i = books.findIndex(b => b._id === book._id);
+          if (i >= 0)
+            books.splice(i, 1);
+        })
+      )
+  }
 }
