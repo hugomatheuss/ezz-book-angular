@@ -53,7 +53,7 @@ export class AuthorService {
       .pipe(
         tap((author) => {
           let authors = this.authorsSubject$.getValue();
-          let i = authors.findIndex(aut => aut._id === author._id);
+          let i = authors.findIndex(a => a._id === author._id);
           if (i >= 0) {
             authors[i] = author;
           }            

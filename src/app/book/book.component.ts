@@ -15,6 +15,9 @@ import { AuthorService } from '../author.service';
 })
 export class BookComponent implements OnInit {
 
+  bookTitle = '';
+  bookAuthor = '';
+  bookEdit = null;
   books: Book[] = [];
   authors: Author[] = [];
   private unsubscribe: Subject<any> = new Subject();
@@ -49,9 +52,12 @@ export class BookComponent implements OnInit {
 
   save() {
     let data = this.bookForm.value;
-    if (data._id != null) {
-      this.bookService.update(data)
-        .subscribe(
+    if (this.bookEdit) {
+      this.bookService.update({
+        _id: this.bookEdit._id,
+        title: this.bookTitle,
+        author: this.bookEdit.author        
+      }).subscribe(
           (book) => {
             this.notify('Updated');
             console.log(book);
@@ -74,6 +80,17 @@ export class BookComponent implements OnInit {
         () => this.notify('Removed'),
         (err) => console.log(err)
       )
+  }
+
+  clearFields() {
+    this.bookTitle = '';
+    this.bookEdit = null;
+  }
+
+  edit(b: Book) {
+    this.bookTitle = b.title;
+    this.bookAuthor = b.author;
+    this.bookEdit = b;    
   }
 
 }

@@ -5,8 +5,12 @@
 </mat-toolbar>
 
 <mat-card>
-  <div fxLayout="row" fxLayoutAlign="space-between stretch">
-    <app-author fxFlex="40"></app-author>
-    <app-book fxFlex="55"></app-book>
-  </div>
+  <mat-tab-group>
+    <mat-tab label="Autor">
+      <app-author></app-author>
+    </mat-tab>
+    <mat-tab label="Livro">
+      <app-book></app-book>
+    </mat-tab>
+  </mat-tab-group>
 </mat-card>

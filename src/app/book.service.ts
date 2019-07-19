@@ -39,11 +39,11 @@ export class BookService {
   update(book: Book): Observable<Book> {    
     return this.http.patch<Book>(`${this.url}/${book._id}`, book)
       .pipe(
-        tap((b) => {
+        tap((book) => {
           let books = this.booksSubject$.getValue();
           let i = books.findIndex(b => b._id === book._id);
           if (i >= 0) {
-            books[i] = b;
+            books[i] = book;
           }            
         })
       )

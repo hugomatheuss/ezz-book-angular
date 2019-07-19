@@ -8,12 +8,12 @@
             <input type="hidden" formControlName="_id">
 
             <mat-form-field>
-                <input matInput placeholder="Livro" formControlName="title">
+                <input matInput [(ngModel)] = "bookTitle" placeholder="Livro" formControlName="title">
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Autor</mat-label>
-                    <mat-select placeholder="Autores" formControlName="author">                        
+                    <mat-select [(ngModel)]="bookAuthor" placeholder="Autores" formControlName="author">                        
                         <mat-option *ngFor="let a of authors" [value]="a._id">
                             {{a.name}}
                         </mat-option>
