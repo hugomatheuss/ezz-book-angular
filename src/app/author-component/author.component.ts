@@ -33,6 +33,57 @@ export class AuthorComponent implements OnInit {
     this.authors$ = this.authorService.getAuthors();   
   }
 
+  onSubmit() {
+    let a: Author = this.authorForm.value;
+    if(!a.id) {
+      this.addAuthor(a);
+    }
+    else {
+      this.updateAuthor(a);
+    }
+  }
   
+  addAuthor(a: Author) {
+    this.authorService.addAuthor(a)
+      .then(()=>{
+        this.snackBar.open('Autor criado com sucesso', 'OK', {duration: 2000});
+        this.authorForm.reset({name: '', id: undefined});
+        this.authorName.nativeElement.focus();
+      })
+      .catch(()=> {
+        this.snackBar.open('Falha na criação do autor :(', 'OK', {duration: 2000});
+      })
+  }
+
+  updateAuthor(a: Author) {
+    this.authorService.updateAuthor(a)
+      .then(()=>{
+        this.snackBar.open('Autor editado com sucesso', 'OK', {duration: 2000});
+        this.authorForm.reset({name: '', id: undefined});
+        this.authorName.nativeElement.focus();
+      })
+      .catch(()=>{
+        this.snackBar.open('Falha ao editar o autor :(', 'OK', {duration: 2000});
+      })
+  }
+
+  edit(a: Author) {
+    console.log(a.id);
+    this.authorForm.setValue(a);
+  }
+
+  del(a: Author) {
+    this.authorService.deleteAuthor(a)
+      .then(()=>{
+        this.snackBar.open('Autor removido com sucesso', 'OK', {duration: 2000});
+      })
+      .catch(()=>{
+        this.snackBar.open('Erro ao remover o autor :(', 'OK', {duration: 2000});
+      })
+  }
+
+  filter(event: any) {
+    this.filterAuthors$ = this.authorService.searchByName(event.target.value);
+  }
 
 }
