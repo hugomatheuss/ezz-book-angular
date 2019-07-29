@@ -1,15 +1,24 @@
 <div fxFill>
 
     <mat-tab-group mat-stretch-tabs class="mat-elevation-z4" fxFill>
-      <mat-tab label="Todos os autores">
+      <mat-tab label="Todos os livros">
           <div fxLayout="column" fxLayoutAlign="space-around stretch" style="padding: 20px; background: #f0f0f0">
-            <form [formGroup]="authorForm" (ngSubmit)="onSubmit()" fxLayout="row" fxLayoutAlign="space-around stretch" #f>
+            <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" fxLayout="row" fxLayoutAlign="space-around stretch" #f>
                 <mat-form-field fxFlex="40">
-                    <input matInput placeholder="Nome do autor"  formControlName='name' #name>
-                </mat-form-field>                                
+                    <input matInput placeholder="Título do livro"  formControlName='title' #title>
+                </mat-form-field>  
+                
+                <mat-form-field>
+                    <mat-label>Autor</mat-label>
+                    <mat-select formControlName='authorId' #authorId>
+                      <mat-option *ngFor="let a of authors$ | async" [value]="a.id">
+                        {{a.name}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
           
                 <div fxLayout="row" fxLayoutAlign="end end" >
-                  <button  mat-button color="primary"  type="submit" [disabled]="!authorForm.valid">Salvar</button>          
+                  <button  mat-button color="primary"  type="submit" [disabled]="!bookForm.valid">Salvar</button>          
                   <button mat-button color="warn"  type="reset">Cancelar</button>
                 </div> 
             </form>
@@ -18,12 +27,17 @@
   
   
           <div class="table-container mat-elevation-z8">
-            <table mat-table [dataSource]="authors$ | async " style="width: 100%;">
+            <table mat-table [dataSource]="books$ | async " style="width: 100%;">
           
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Nome </th>
-                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-              </ng-container>                        
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef> Título </th>
+                <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+              </ng-container>
+              
+              <ng-container matColumnDef="authorId">
+                <th mat-header-cell *matHeaderCellDef> Autor </th>
+                <td mat-cell *matCellDef="let element"> {{element.authorId}} </td>
+              </ng-container> 
   
               <ng-container matColumnDef="operations">
                 <th mat-header-cell *matHeaderCellDef></th>
@@ -49,7 +63,7 @@
           </div>
   
           <ul>
-            <li *ngFor="let a of filterAuthors$|async">{{a.name}}</li>
+            <li *ngFor="let b of filterBooks$|async">{{b.title}}</li>
           </ul>
   
       </mat-tab>

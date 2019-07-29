@@ -10,7 +10,7 @@ import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 //import { HttpClientModule } from '@angular/common/http';
 import { AuthorComponent } from './author-component/author.component';
-//import { BookComponent } from './book-component/book.component';
+import { BookComponent } from './book-component/book.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
 @NgModule({
   declarations: [
     AppComponent,    
-    AuthorComponent
+    AuthorComponent, BookComponent
   ],
   imports: [
     BrowserModule,

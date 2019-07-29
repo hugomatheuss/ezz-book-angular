@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Author } from '../models/author';
 import { AuthorService } from '../services/author.service';
 import { MatSnackBar } from '@angular/material';
-import { Subject, Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-author',
